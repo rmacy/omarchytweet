@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "ryan.xtweet",
+  "name": "X composer",
+  "version": "1.0.0",
+  "author": "Ryan Macy",
+  "description": "Compose X posts with a browser handoff by default or explicit paid API posting through the bundled backend.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "X composer",
+    "description": "One-click post composer anchored to the bar.",
+    "category": "Network",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

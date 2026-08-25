@@ -1,0 +1,46 @@
+# xtweet — example configuration (plugin: ryan.xtweet)
+#
+# Copy to ~/.config/xtweet/config.toml and keep it private:
+#     mkdir -m 700 -p ~/.config/xtweet
+#     cp config.example.toml ~/.config/xtweet/config.toml
+#     chmod 600 ~/.config/xtweet/config.toml
+#
+# The backend also generates this same template automatically (with the
+# right permissions) the first time it runs.
+#
+# ------------------------------------------------------------- modes -----
+# 1) Web Intent (default, free)
+#    paid_api = false  ->  posts are handed off to the X composer in your
+#    browser (https://x.com/intent/tweet). Nothing is charged; you press
+#    the final Post button yourself.
+#
+# 2) Paid API (explicit opt-in)
+#    paid_api = true plus ALL FOUR OAuth fields below  ->  posts are sent
+#    directly to POST https://api.x.com/2/tweets and published immediately,
+#    without a confirmation step.
+#
+#    Pricing is pay-per-use and changes over time; the X Developer Console
+#    is authoritative: https://developer.x.com
+#    As of writing, publishing costs roughly:
+#        $0.015 per text-only post
+#        $0.20  per post that contains a URL
+#
+#    The backend refuses paid mode unless paid_api is explicitly true AND
+#    all four credential fields are non-empty. There is no silent
+#    enablement: partial credentials keep you on the free Web Intent.
+
+paid_api = false
+
+# --------------------------------------------------------- credentials ---
+# OAuth 1.0a user-context credentials with Read+Write access.
+# Developer Console -> your app -> Keys and tokens.
+#   api_key / api_key_secret            app consumer keys
+#                                        (legacy names consumer_key /
+#                                         consumer_secret also accepted)
+#   access_token / access_token_secret  your user access tokens
+# Required for paid mode; ignored in Web Intent mode.
+
+api_key = ""
+api_key_secret = ""
+access_token = ""
+access_token_secret = ""

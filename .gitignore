@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Poetry / build
+.venv/
+dist/
+build/
+*.egg-info/
+*.tar.gz
+
+# Editor / OS
+*.bak
+*.bak.*
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# Runtime artifacts (lives in $XDG_RUNTIME_DIR, never here)

@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""xtweet — command-line interface to the ryan.xtweet Omarchy plugin backend.
+
+No daemon, no socket: every call runs the plugin-local backend
+(backend.py, resolved relative to this script) directly.
+
+    xtweet post            read post text from stdin and wait for the result
+    xtweet mode            show the active posting mode
+    xtweet enqueue         read {"text": ...} JSON on stdin, queue it
+    xtweet status JOBID    show a job's status
+    xtweet active          show the active job, if any
+    xtweet ack JOBID       acknowledge a finished job
+    xtweet draft get|set|clear   manage the shared draft
+
+Exit codes: 0 = posted, or the X composer opened (handoff — you still
+press Post in X); 1 = busy/rejected/unknown/error; 2 = usage.
+`post` prints exactly one JSON object: the terminal job status.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+BACKEND = str(Path(__file__).resolve().parent.parent / "backend.py")
+TERMINAL_STATES = {"posted", "handoff", "rejected", "unknown"}
+SUCCESS_STATES = {"posted", "handoff"}
+POLL_INTERVAL = 0.4
+WAIT_TIMEOUT = 180  # seconds
+
+USAGE = """usage: printf '%s' 'post text' | xtweet post
+       xtweet mode
+       xtweet enqueue          (reads {"text": ...} JSON on stdin)
+       xtweet status JOBID
+       xtweet active
+       xtweet ack JOBID
+       xtweet draft get|set|clear
+
+exit codes: 0 posted or composer opened (handoff); 1 failed/busy/unknown; 2 usage"""
+
+
+def run_backend(args: list[str], stdin: str | None = None) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [sys.executable, BACKEND, *args],
+        input=stdin,
+        capture_output=True,
+        text=True,
+    )
+
+
+def parse_json_output(proc: subprocess.CompletedProcess) -> dict | None:
+    if proc.stderr.strip():
+        sys.stderr.write(proc.stderr)
+    try:
+        obj = json.loads(proc.stdout)
+    except ValueError:
+        return None
+    return obj if isinstance(obj, dict) else None
+
+
+def cmd_post(text: str) -> int:
+    proc = run_backend(["enqueue"], stdin=json.dumps({"text": text}))
+    obj = parse_json_output(proc)
+    if obj is None:
+        sys.stderr.write(f"xtweet: backend produced no JSON (exit {proc.returncode})\n")
+        return 1
+    if not obj.get("ok"):
+        sys.stdout.write(json.dumps(obj, indent=2) + "\n")
+        return 1
+    jid = obj.get("jobId")
+    sys.stderr.write(f"xtweet: queued job {jid} ({obj.get('mode')} mode); waiting...\n")
+    status: dict | None = None
+    deadline = time.monotonic() + WAIT_TIMEOUT
+    while time.monotonic() < deadline:
+        status = parse_json_output(run_backend(["status", str(jid)]))
+        if status and status.get("state") in TERMINAL_STATES:
+            break
+        status = status or {}
+        time.sleep(POLL_INTERVAL)
+    if status is None or status.get("state") not in TERMINAL_STATES:
+        state = (status or {}).get("state", "unknown")
+        sys.stdout.write(
+            json.dumps(
+                {
+                    "ok": False,
+                    "kind": "timeout",
+                    "jobId": jid,
+                    "state": state,
+                    "message": f"timed out waiting for the job to finish; check: xtweet status {jid}",
+                },
+                indent=2,
+            )
+            + "\n"
+        )
+        return 1
+    run_backend(["ack", str(jid)])  # best-effort cleanup of the finished job
+    sys.stdout.write(json.dumps(status, indent=2) + "\n")
+    return 0 if status.get("state") in SUCCESS_STATES else 1
+
+
+def main(argv: list[str]) -> int:
+    if not argv or argv[0] in ("-h", "--help", "help"):
+        sys.stderr.write(USAGE + "\n")
+        return 0 if argv else 2
+    cmd, rest = argv[0], argv[1:]
+    if not os.path.isfile(BACKEND):
+        sys.stderr.write(f"xtweet: backend not found at {BACKEND}\n")
+        return 127
+    if cmd == "post":
+        if rest:
+            sys.stderr.write(
+                "xtweet: refusing post text in argv/process metadata; pipe it on stdin instead\n"
+            )
+            return 2
+        text = sys.stdin.read()
+        if not text.strip():
+            sys.stderr.write("usage: printf '%s' 'post text' | xtweet post\n")
+            return 2
+        return cmd_post(text)
+    if cmd in ("mode", "active", "enqueue", "status", "ack", "draft"):
+        # Direct passthrough: stdout/stdin/exit code come from the backend.
+        os.execv(sys.executable, [sys.executable, BACKEND, cmd, *rest])
+        return 127  # unreachable
+    sys.stderr.write(f"xtweet: unknown command {cmd!r}\n{USAGE}\n")
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
