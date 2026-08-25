@@ -17,11 +17,9 @@ Pricing is pay-per-use and changes over time.  The **X Developer Console** ([dev
 
 ## Install
 
+```sh
+omarchy plugin add https://github.com/rmacy/ryan.xtweet.git --enable
 ```
-omarchy plugin add <repo-url> --enable
-```
-
-Replace `<repo-url>` with the git clone URL for this repository.
 
 ## Configure
 
@@ -72,6 +70,7 @@ xtweet.png              Bar icon
 bin/xtweet              Optional CLI wrapper (resolves backend relative to itself)
 tests/test_backend.py   Isolated stdlib backend regression suite
 pyproject.toml          Poetry development metadata (runtime has no dependencies)
+LICENSE                 MIT license
 ```
 
 Runtime state (job files, locks) lives under `$XDG_RUNTIME_DIR/ryan.xtweet`.  Credentials are read from `~/.config/xtweet/config.toml` (0700 dir, 0600 file) and never copied into job files.
@@ -104,3 +103,7 @@ Remove the optional CLI symlink and configuration if desired:
 rm -f ~/.local/bin/xtweet
 rm -rf ~/.config/xtweet
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
