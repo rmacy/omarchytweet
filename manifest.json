@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "ryan.xtweet",
   "name": "X composer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Ryan Macy",
   "description": "Compose X posts with a browser handoff by default or explicit paid API posting through the bundled backend.",
   "kinds": [

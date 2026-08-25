@@ -2,6 +2,16 @@
 
 Compose X (Twitter) posts from the Omarchy bar.
 
+## Screenshots
+
+### Bar widget
+
+![X composer icon alongside Omarchy system widgets](screenshots/bar-widget.png)
+
+### Composer popover
+
+![Themed X composer popover with a sample post](screenshots/composer-popover.png)
+
 ## Posting modes
 
 **Browser composer (default, free)** — opens the X Web Intent URL via `xdg-open`.  You press the final Post button in your browser.  No API keys needed.
@@ -67,6 +77,8 @@ Panel.qml               Per-monitor composer UI
 manifest.json           Omarchy plugin metadata
 config.example.toml     Configuration template
 xtweet.png              Bar icon
+preview.png             Marketplace preview (bar + composer)
+screenshots/            Browser-free detailed UI captures
 bin/xtweet              Optional CLI wrapper (resolves backend relative to itself)
 tests/test_backend.py   Isolated stdlib backend regression suite
 pyproject.toml          Poetry development metadata (runtime has no dependencies)

@@ -3,12 +3,15 @@
 # repository and at runtime needs nothing beyond the Python standard
 # library and xdg-open. This is not a buildable Python package.
 
-[tool.poetry]
+[project]
 name = "ryan-xtweet"
-version = "1.0.0"
+version = "1.0.1"
 description = "X composer Omarchy plugin: browser-intent handoff by default, explicit opt-in paid API posting."
-authors = ["Ryan Macy <ryan@macy.dev>"]
-package-mode = false
+authors = [
+  { name = "Ryan Macy", email = "ryan@macy.dev" }
+]
+requires-python = ">=3.11,<4"
+dependencies = []
 
-[tool.poetry.dependencies]
-python = ">=3.11,<4"
+[tool.poetry]
+package-mode = false
