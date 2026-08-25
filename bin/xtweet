@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""xtweet — command-line interface to the ryan.xtweet Omarchy plugin backend.
+"""xtweet — command-line interface to the bitr0t.omarchytweet Omarchy plugin backend.
 
 No daemon, no socket: every call runs the plugin-local backend
 (backend.py, resolved relative to this script) directly.

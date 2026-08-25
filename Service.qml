@@ -10,7 +10,7 @@ QtObject {
   property var shell: null
 
   readonly property string home: Quickshell.env("HOME") || ""
-  readonly property string backendPath: home + "/.config/omarchy/plugins/ryan.xtweet/backend.py"
+  readonly property string backendPath: home + "/.config/omarchy/plugins/bitr0t.omarchytweet/backend.py"
 
   property string mode: "intent"
   property string modeLabel: "Browser composer"

@@ -1,4 +1,4 @@
-# ryan.xtweet
+# bitr0t.omarchytweet
 
 Compose X (Twitter) posts from the Omarchy bar.
 
@@ -28,14 +28,14 @@ Pricing is pay-per-use and changes over time.  The **X Developer Console** ([dev
 ## Install
 
 ```sh
-omarchy plugin add https://github.com/rmacy/ryan.xtweet.git --enable
+omarchy plugin add https://github.com/rmacy/omarchytweet.git --enable
 ```
 
 ## Configure
 
 ```sh
 mkdir -m 700 -p ~/.config/xtweet
-cp ~/.config/omarchy/plugins/ryan.xtweet/config.example.toml ~/.config/xtweet/config.toml
+cp ~/.config/omarchy/plugins/bitr0t.omarchytweet/config.example.toml ~/.config/xtweet/config.toml
 chmod 600 ~/.config/xtweet/config.toml
 ```
 
@@ -55,7 +55,7 @@ Drafts persist across panel open/close cycles and are shared across monitors.
 The `bin/xtweet` wrapper resolves the backend relative to itself.  Symlink it into your PATH:
 
 ```sh
-ln -sf ~/.config/omarchy/plugins/ryan.xtweet/bin/xtweet ~/.local/bin/xtweet
+ln -sf ~/.config/omarchy/plugins/bitr0t.omarchytweet/bin/xtweet ~/.local/bin/xtweet
 ```
 
 Post text is always passed on **stdin**, never as a command-line argument:
@@ -85,7 +85,7 @@ pyproject.toml          Poetry development metadata (runtime has no dependencies
 LICENSE                 MIT license
 ```
 
-Runtime state (job files, locks) lives under `$XDG_RUNTIME_DIR/ryan.xtweet`.  Credentials are read from `~/.config/xtweet/config.toml` (0700 dir, 0600 file) and never copied into job files.
+Runtime state (job files, locks) lives under `$XDG_RUNTIME_DIR/bitr0t.omarchytweet`.  Credentials are read from `~/.config/xtweet/config.toml` (0700 dir, 0600 file) and never copied into job files.
 
 ## Development
 
@@ -106,7 +106,7 @@ Runtime never depends on Poetry.
 ## Uninstall
 
 ```
-omarchy plugin remove ryan.xtweet
+omarchy plugin remove bitr0t.omarchytweet
 ```
 
 Remove the optional CLI symlink and configuration if desired:

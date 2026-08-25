@@ -10,11 +10,11 @@ import qs.Ui
 // Shift+Enter inserts a newline, and Escape dismisses the panel.
 Panel {
   id: root
-  moduleName: "ryan.xtweet"
-  ipcTarget: "ryan.xtweet"
+  moduleName: "bitr0t.omarchytweet"
+  ipcTarget: "bitr0t.omarchytweet"
 
   readonly property var xtweet: bar && bar.shell
-    ? bar.shell.serviceFor("ryan.xtweet") : null
+    ? bar.shell.serviceFor("bitr0t.omarchytweet") : null
   readonly property bool serviceReady: xtweet !== null
   readonly property bool posting: serviceReady && xtweet.posting
   readonly property bool paidApi: serviceReady && xtweet.paidApi
@@ -53,9 +53,9 @@ Panel {
 
 
   // IPC route separate from the Panel open/close target:
-  //   omarchy-shell ryan.xtweet.compose compose "hello"
+  //   omarchy-shell bitr0t.omarchytweet.compose compose "hello"
   IpcHandler {
-    target: "ryan.xtweet.compose"
+    target: "bitr0t.omarchytweet.compose"
 
     function compose(text: string): string { return root.compose(text) }
   }

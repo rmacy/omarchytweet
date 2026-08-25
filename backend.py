@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ryan.xtweet backend — job-based posting helper for the Omarchy plugin.
+"""bitr0t.omarchytweet backend — job-based posting helper for the Omarchy plugin.
 
 Stdlib-only, single file. Every invocation prints exactly ONE JSON object on
 stdout (diagnostics go to stderr) and exits 0 for {"ok": true}, nonzero
@@ -32,7 +32,7 @@ Modes
 Security posture
     * ~/.config/xtweet is kept 0700 and config.toml 0600; symlinks, foreign
       owners, or group/other permission bits are refused.
-    * Job state lives under $XDG_RUNTIME_DIR/ryan.xtweet (0700) with 0600
+    * Job state lives under $XDG_RUNTIME_DIR/bitr0t.omarchytweet (0700) with 0600
       files; OAuth secrets are never copied into job files.
     * The Web Intent URL embeds the draft text and is never logged, echoed,
       or returned in JSON (handoff reports carry no URL). The posted-status
@@ -66,7 +66,7 @@ from pathlib import Path
 
 INTENT_URL = "https://x.com/intent/tweet"
 API_URL = "https://api.x.com/2/tweets"
-USER_AGENT = "ryan.xtweet-omarchy/1.0"
+USER_AGENT = "bitr0t.omarchytweet-omarchy/1.1"
 HTTP_TIMEOUT = 20  # seconds
 XDG_OPEN_TIMEOUT = 20  # seconds
 WORKER_NEVER_STARTED_GRACE = 60  # seconds
@@ -280,16 +280,16 @@ def ensure_runtime() -> Path:
     base = os.environ.get("XDG_RUNTIME_DIR", "")
     if not base or not os.path.isabs(base):
         raise BackendError("runtime", "XDG_RUNTIME_DIR is not set; cannot manage job state")
-    rt = Path(base) / "ryan.xtweet"
+    rt = Path(base) / "bitr0t.omarchytweet"
     if rt.exists():
-        _refuse_bad_path(rt, True, "$XDG_RUNTIME_DIR/ryan.xtweet")
+        _refuse_bad_path(rt, True, "$XDG_RUNTIME_DIR/bitr0t.omarchytweet")
     else:
         with contextlib.suppress(FileExistsError):
             rt.mkdir(mode=0o700)
         os.chmod(rt, 0o700)
     jobs = rt / "jobs"
     if jobs.exists():
-        _refuse_bad_path(jobs, True, "$XDG_RUNTIME_DIR/ryan.xtweet/jobs")
+        _refuse_bad_path(jobs, True, "$XDG_RUNTIME_DIR/bitr0t.omarchytweet/jobs")
     else:
         with contextlib.suppress(FileExistsError):
             jobs.mkdir(mode=0o700)

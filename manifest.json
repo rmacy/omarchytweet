@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "ryan.xtweet",
+  "id": "bitr0t.omarchytweet",
   "name": "X composer",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Ryan Macy",
   "description": "Compose X posts with a browser handoff by default or explicit paid API posting through the bundled backend.",
   "kinds": [

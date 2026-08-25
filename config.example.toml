@@ -1,4 +1,4 @@
-# xtweet — example configuration (plugin: ryan.xtweet)
+# xtweet — example configuration (plugin: bitr0t.omarchytweet)
 #
 # Copy to ~/.config/xtweet/config.toml and keep it private:
 #     mkdir -m 700 -p ~/.config/xtweet

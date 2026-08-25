@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic stdlib regression test for the ryan.xtweet backend.
+"""Deterministic stdlib regression test for the bitr0t.omarchytweet backend.
 
 Runs the real backend.py as a subprocess inside a throwaway sandbox with
 a private HOME, XDG_RUNTIME_DIR and PATH, so no real config, browser,
@@ -120,7 +120,7 @@ with tempfile.TemporaryDirectory(prefix="xtweet-reg-") as td:
     # in xdg-open's argv. Ack removes all draft-bearing job material.
     _, q = run(env, "enqueue", payload={"text": "one worker only"}, ok=True)
     jid = q["jobId"]
-    worker_claim = runtime / "ryan.xtweet" / "jobs" / jid / "worker.json"
+    worker_claim = runtime / "bitr0t.omarchytweet" / "jobs" / jid / "worker.json"
     for _ in range(50):
         if worker_claim.exists():
             break
@@ -147,7 +147,7 @@ with tempfile.TemporaryDirectory(prefix="xtweet-reg-") as td:
     run(env, "ack", jid, ok=True)
     assert not redirect.exists(), "ack retained draft-bearing redirect"
 
-    worker_files = list((runtime / "ryan.xtweet" / "jobs").glob("*/worker.json"))
+    worker_files = list((runtime / "bitr0t.omarchytweet" / "jobs").glob("*/worker.json"))
     assert not worker_files, worker_files
 
     # Draft flow: enqueue pins the draft revision it submitted, a second

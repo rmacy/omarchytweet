@@ -1,11 +1,11 @@
-# ryan.xtweet — an Omarchy plugin (see manifest.json for plugin metadata).
+# bitr0t.omarchytweet — an Omarchy plugin (see manifest.json for plugin metadata).
 # Development metadata only: the plugin is installed by cloning this
 # repository and at runtime needs nothing beyond the Python standard
 # library and xdg-open. This is not a buildable Python package.
 
 [project]
-name = "ryan-xtweet"
-version = "1.0.1"
+name = "bitr0t-omarchytweet"
+version = "1.1.0"
 description = "X composer Omarchy plugin: browser-intent handoff by default, explicit opt-in paid API posting."
 authors = [
   { name = "Ryan Macy", email = "ryan@macy.dev" }
